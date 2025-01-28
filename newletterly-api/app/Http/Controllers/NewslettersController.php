@@ -11,16 +11,13 @@ class NewslettersController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $newsletters = $user->newsletters;
 
-        return response()->json($newsletters);
+        return response()->json($user->newsletters);
     }
 
     public function show(Request $request, $id)
     {
-        $user = $request->user();
-
-        $newsletter = $user->newsletters()->find($id);
+        $newsletter = $request->user()->newsletters()->find($id);
 
         if (!$newsletter) {
             return response()->json(['message' => 'Newsletter not found'], 404);
@@ -36,9 +33,7 @@ class NewslettersController extends Controller
             'subtitle' => 'nullable|string|max:255',
         ]);
 
-        $user = $request->user();
-
-        $newsletter = $user->newsletters()->create([
+        $newsletter = $request->user()->newsletters()->create([
             'title' => $validated['title'],
             'subtitle' => $validated['subtitle'] ?? null,
         ]);
@@ -48,9 +43,7 @@ class NewslettersController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $user = $request->user();
-
-        $newsletter = $user->newsletters()->find($id);
+        $newsletter = $request->user()->newsletters()->find($id);
 
         if (!$newsletter) {
             return response()->json(['message' => 'Newsletter not found'], 404);

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function show(Request $request)
+    public function getAuthenticatedUser(Request $request)
     {
         return response()->json($request->user());
     }

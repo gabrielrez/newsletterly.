@@ -13,13 +13,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::middleware('auth:sanctum')->group(function () {
     // Users
-    Route::get('/users/{id}', [UsersController::class, 'show']);
+    Route::get('/user', [UsersController::class, 'getAuthenticatedUser']);
 
     // Newsletters
-    Route::get('/newsletters', [NewslettersController::class, 'index']);
-    Route::get('/newsletters/{id}', [NewslettersController::class, 'show']);
-
-    Route::post('/newsletters', [NewslettersController::class, 'store']);
-
-    Route::delete('/newsletters/{id}', [NewslettersController::class, 'destroy']);
+    Route::resource('newsletters', NewslettersController::class)->only([
+        'index',    // GET     /newsletters
+        'show',     // GET     /newsletters/{id}
+        'store',    // POST    /newsletters
+        'destroy',  // DELETE  /newsletters/{id}
+    ]);
 });
