@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Newsletter;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NewslettersController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $user = $request->user();
 
         return response()->json($user->newsletters);
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, int $id): JsonResponse
     {
         $newsletter = $request->user()->newsletters()->find($id);
 
@@ -26,7 +27,7 @@ class NewslettersController extends Controller
         return response()->json($newsletter);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -41,7 +42,7 @@ class NewslettersController extends Controller
         return response()->json($newsletter, 201);
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, int $id): JsonResponse
     {
         $newsletter = $request->user()->newsletters()->find($id);
 
