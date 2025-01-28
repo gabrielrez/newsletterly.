@@ -8,31 +8,56 @@ use Illuminate\Support\Facades\Auth;
 
 class NewslettersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Newsletter::all();
+        $user = $request->user();
+        $newsletters = $user->newsletters;
+
+        return response()->json($newsletters);
+    }
+
+    public function show(Request $request, $id)
+    {
+        $user = $request->user();
+
+        $newsletter = $user->newsletters()->find($id);
+
+        if (!$newsletter) {
+            return response()->json(['message' => 'Newsletter not found'], 404);
+        }
+
+        return response()->json($newsletter);
     }
 
     public function store(Request $request)
     {
-        $newsletter = $request->validate([
-            'title' => 'required|max:50',
-            'subtitle' => 'required|max:255',
-            'user_id' => 'required'
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
         ]);
 
-        return Newsletter::create($newsletter);
+        $user = $request->user();
+
+        $newsletter = $user->newsletters()->create([
+            'title' => $validated['title'],
+            'subtitle' => $validated['subtitle'] ?? null,
+        ]);
+
+        return response()->json($newsletter, 201);
     }
 
-    public function show(Newsletter $newsletter)
+    public function destroy(Request $request, $id)
     {
-        return $newsletter;
-    }
+        $user = $request->user();
 
-    public function destroy(Newsletter $newsletter)
-    {
+        $newsletter = $user->newsletters()->find($id);
+
+        if (!$newsletter) {
+            return response()->json(['message' => 'Newsletter not found'], 404);
+        }
+
         $newsletter->delete();
 
-        return ['message' => 'Newsletter deleted successfully'];
+        return response()->json(['message' => 'Newsletter deleted successfully'], 200);
     }
 }

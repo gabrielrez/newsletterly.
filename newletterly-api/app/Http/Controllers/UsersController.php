@@ -7,25 +7,8 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-
-    public function index()
+    public function show(Request $request)
     {
-        return User::all();
-    }
-
-    public function store(Request $request)
-    {
-        $fields = $request->validate([
-            'name' => 'required|max:100',
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-
-        return User::create($fields);
-    }
-
-    public function show(User $user)
-    {
-        return $user;
+        return response()->json($request->user());
     }
 }
