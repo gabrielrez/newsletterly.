@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EditionsController;
 use App\Http\Controllers\NewslettersController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
@@ -16,10 +17,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UsersController::class, 'getAuthenticatedUser']);
 
     // Newsletters
-    Route::resource('newsletters', NewslettersController::class)->only([
-        'index',    // GET     /newsletters
-        'show',     // GET     /newsletters/{id}
-        'store',    // POST    /newsletters
-        'destroy',  // DELETE  /newsletters/{id}
-    ]);
+    Route::get('/newsletters', [NewslettersController::class, 'index']);
+    Route::get('/newsletters/{id}', [NewslettersController::class, 'show']);
+    Route::post('/newsletters', [NewslettersController::class, 'store']);
+    Route::delete('/newsletters/{id}', [NewslettersController::class, 'destroy']);
+
+    // Editions
+    Route::get('/editions/newsletter/{newsletter_id}', [EditionsController::class, 'index']);
+    Route::get('/editions/{id}', [EditionsController::class, 'show']);
+    Route::post('/editions', [EditionsController::class, 'store']);
 });

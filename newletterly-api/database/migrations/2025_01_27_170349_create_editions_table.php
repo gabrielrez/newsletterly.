@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('editions', function (Blueprint $table) {
             $table->id();
-            $table->integer('edition_number');
             $table->string('title');
             $table->string('subtitle')->nullable();
             $table->text('content');

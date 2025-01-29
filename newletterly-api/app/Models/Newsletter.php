@@ -17,4 +17,9 @@ class Newsletter extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function editions()
+    {
+        return $this->hasMany(Edition::class);
+    }
 }

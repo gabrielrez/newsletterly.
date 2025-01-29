@@ -11,9 +11,7 @@ class NewslettersController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $user = $request->user();
-
-        return response()->json($user->newsletters);
+        return response()->json($request->user()->newsletters);
     }
 
     public function show(Request $request, int $id): JsonResponse
